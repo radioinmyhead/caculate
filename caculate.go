@@ -75,7 +75,7 @@ func filter(s string) (n string) {
 }
 
 func fparse(s string, d map[string]string) (ns string, err error) {
-	re := regexp.MustCompile(`\${([a-zA-Z]+)}`)
+	re := regexp.MustCompile(`\${([a-zA-Z0-9]+)}`)
 	matches := re.FindAllStringSubmatchIndex(s, -1)
 	if matches == nil {
 		return s, nil

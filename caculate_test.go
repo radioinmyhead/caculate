@@ -5,10 +5,10 @@ import (
 )
 
 func TestCal(t *testing.T) {
-	dic := map[string]string{"a": "10", "b": "100", "c": "ok"}
+	dic := map[string]string{"a5": "10", "b": "100", "c": "ok"}
 	cases := map[string]bool{
-		`${a}>1&& ${a}>50||${b}>10&&"${c}"!="ok"`: false,
-		`${a}>1&&( ${a}>50||${b}>10)`:             true,
+		`${a5}>1&& ${a5}>50||${b}>10&&"${c}"!="ok"`: false,
+		`${a5}>1&&( ${a5}>50||${b}>10)`:             true,
 	}
 	for k, v := range cases {
 		testv, err := Caculate(dic, k)
