@@ -2,6 +2,7 @@ package caculate
 
 import (
 	"fmt"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -232,8 +233,29 @@ func rparse(ss []string) (ret bool, err error) {
 	}
 	return false, nil
 }
-func Caculate(dic map[string]string, str string) (ret bool, err error) {
-	str, err = fparse(filter(str), dic)
+func check(dic map[string]interface{}) (ret map[string]string, err error) {
+	for k, v := range dic {
+		switch reflect.ValueOf(v).Kind() {
+		case reflect.Int:
+			ret[k] = fmt.Sprintf("%v", v)
+		case reflect.Bool:
+			ret[k] = fmt.Sprintf(`'%v'`, v)
+		case reflect.String:
+			ret[k] = fmt.Sprintf(`'%v'`, v)
+		case reflect.Float:
+			ret[k] = fmt.Sprintf("%v", v)
+		default:
+			return ret, fmt.Errorf("check type fail: %v", v)
+		}
+	}
+	return ret, nil
+}
+func Caculate(dic map[string]interface{}, str string) (ret bool, err error) {
+	ndic, err := check(dic)
+	if err != nil {
+		return ret, err
+	}
+	str, err = fparse(filter(str), ndic)
 	if err != nil {
 		return ret, err
 	}
